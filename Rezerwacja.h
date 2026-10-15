@@ -28,7 +28,7 @@ class Rezerwacja {
         double anuluj(bool czyPoTerminie);
 
         int getIdRezerwacji() const;
-        const unique_ptr<Pokoj>& getPokoj() const;
+        const unique_ptr<Pokoj>& Rezerwacja::getPokoj() const;
 };
 
 #endif
