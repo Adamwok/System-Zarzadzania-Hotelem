@@ -2,21 +2,28 @@
 #define USLUGADODATKOWA_H
 
 #include <string>
-using namespace std;
 
 class UslugaDodatkowa {
     private:
         int idUslugi;
-        string nazwa;
+        std::string kodUslugi;
+        std::string nazwa;
         double cena;
+        bool dostepna;
     
     public:
-        UslugaDodatkowa(int id, string nazwa, double cena);
+        UslugaDodatkowa::UslugaDodatkowa(int idUslugi, const std::string &kodUslugi, const std::string &nazwa, double cena, bool dostepna = true);
+        ~UslugaDodatkowa() = default;
+
+        bool czyDostepna() const;
+        bool zarezerwujUsluge();
+        void zwolnijUsluge();
+        void wyswietlSzczegoly() const;
 
         double getCena() const;
-        string getNazwa() const;
+        std::string getNazwa() const;
         int getIdUslugi() const;
-
+        std::string getKodUslugi() const;
 };
 
 #endif
