@@ -1,61 +1,99 @@
 #include "systemHotelu.h"
-#include "pokoj.h"
-#include "faktura.h"
-#include <algorithm>
-using namespace std;
+#include <iostream>
+#include <utility>
 
-bool SystemHotelu::utworzRezerwacje(int idGoscia, int nrPokoju, string dataOd, string dataDo, int idRezerwacji) {
-    shared_ptr<Pokoj> docelowyPokoj = nullptr;
+SystemHotelu::SystemHotelu()
+    : licznikRezerwacji(1), licznikFaktur(1) {}
 
-    for (auto& p : pokoje) {
-        if (p->getNrPokoju() == nrPokoju) {
-            docelowyPokoj = p;
+void SystemHotelu::dodajGoscia(std::unique_ptr<Gosc> gosc) {
+    listaGosci.push_back(std::move(gosc));
+}
+
+void SystemHotelu::dodajRecepcjoniste(std::unique_ptr<Recepcjonista> recepcjonista) {
+    listaRecepcjonistow.push_back(std::move(recepcjonista));
+}
+
+void SystemHotelu::dodajPokoj(std::unique_ptr<Pokoj> pokoj) {
+    listaPokoi.push_back(std::move(pokoj));
+}
+
+void SystemHotelu::wyszukajDostepnePokoje() const {
+    std::cout << "[SystemHotelu] Wyszukiwanie dostepnych pokoi:" << std::endl;
+    bool znaleziono = false;
+    for (const auto& p : listaPokoi) {
+        if (p->czyDostepny()){
+            p->wyswietlSzczegoly();
+            znaleziono = true;
+        }
+    }
+    if(!znaleziono){
+        std::cout << " | Brak wolnych pokoi w hotelu." << std::endl;
+    }
+}
+
+void SystemHotelu::utworzRezerwacje(int idGoscia, int nrPokoju, const std::string &dataOd, const std::string &dataDo){
+    std::unique_ptr<Pokoj> wybranyPokoj = nullptr;
+
+    for (auto it = listaPokoi.begin(); it != listaPokoi.end(); ++it){
+        if ((*it)->getNumer() == nrPokoju && (*it)->czyDostepny()) {
+            wybranyPokoj = std::move(*it);
+            listaPokoi.erase(it);
             break;
         }
     }
 
-    if (docelowyPokoj != nullptr && docelowyPokoj->czyDostepny()) {
-        rezerwacje.emplace_back(idRezerwacji, idGoscia, dataOd, dataDo, docelowyPokoj);
-        return true;
+    if (wybranyPokoj) {
+        int idNowejRezerwacji = licznikRezerwacji++;
+        auto rezerwacja = std::make_unique<Rezerwacja>(idNowejRezerwacji, idGoscia, dataOd, dataDo, std::move(wybranyPokoj));
+        aktywneRezerwacje.push_back(std::move(rezerwacja));
+        std::cout << "[SystemHotelu] Utworzono rezerwacje o ID: " << idNowejRezerwacji
+                    << " | Pokoj: " << nrPokoju << std::endl;
+    } else {
+        std::cout << "[SystemHotelu] Blad: Pokoj nr: " << nrPokoju << " nie istnieje lub jest zajęty." << std::endl;
     }
-
-    return false;
 }
 
-unique_ptr<Faktura> SystemHotelu::wymeldujGosc(int idRezerwacji, int idFaktury) {
-    Rezerwacja * rezerwacja = nullptr;
+void SystemHotelu::zameldujGosc(int idRezerwacji) {
+    Rezerwacja* rezerwacja = znajdzRezerwacje(idRezerwacji);
+    if (rezerwacja != nullptr) {
+        std::cout << "[SystemHotelu] Pomyslnie zameldowano goscia dla reerwacji ID: " << idRezerwacji << std::endl;
+    } else {
+        std::cout << "[SystemHotelu] Blad zameldowania: Nie znaleziono rezerwacji ID: " << idRezerwacji << std::endl; 
+    }
+}
 
-    for (auto& r : rezerwacje) {
-        if (r.getIdRezerwacji() == idRezerwacji) {
-            rezerwacja = &r;
-            break;
+void SystemHotelu::wymeldujGosc(int idRezerwacji) {
+    for (auto it = aktywneRezerwacje.begin(); it != aktywneRezerwacje.end(); ++it){
+        if((*it)->getIdRezerwacji() == idRezerwacji) {
+            (*it)->wystawFakture(licznikFaktur++);
+
+            const std::unique_ptr<Pokoj>& pokojRef = (*it)->getPokoj();
+            if(pokojRef != nullptr) {
+                pokojRef->setDostepny(true);
+            }
+
+            std::cout << "[Systemhotelu] Wymeldowano goscia z rezerwacji ID: " << idRezerwacji << std::endl;
+            if((*it)->getFaktura() != nullptr) {
+                (*it)->getFaktura()->drukujFakture();
+            }
+
+            std::unique_ptr<Pokoj> oddawanyPokoj = (*it)->oddajPokoj();
+            if(oddawanyPokoj){
+                listaPokoi.push_back(std::move(oddawanyPokoj));
+            }
+
+            aktywneRezerwacje.erase(it);
+            return;
         }
     }
-
-    if (rezerwacja == nullptr) {
-        return nullptr;
-    }
-
-    auto faktura = rezerwacja->wystawFakture(idFaktury);
-
-    const auto& pokoj = rezerwacja->getPokoj();
-    if (pokoj != nullptr) {
-        pokoj->setDostepny(true);
-    }
-
-    rezerwacja->setZameldowany(false);
-    return faktura;
+    std::cout << "[Systemhotelu] Blad: Nie znaleziono rezerwacji ID: " << idRezerwacji << " do anulowania.\n";
 }
 
-void SystemHotelu::zameldujGoscia(int idRezerwacji) {
-    for (auto& r : rezerwacje) {
-        if (r.getIdRezerwacji() == idRezerwacji) {
-            r.setZameldowany(true);
-            break;
+Rezerwacja* SystemHotelu::znajdzRezerwacje(int idRezerwacji) {
+    for (const auto& rezerwacja : aktywneRezerwacje) {
+        if (rezerwacja->getIdRezerwacji() == idRezerwacji) {
+            return rezerwacja.get();
         }
     }
-}
-
-void SystemHotelu::dodajPokoj(shared_ptr<Pokoj> pokoj) {
-    pokoje.push_back(pokoj);
+    return nullptr;
 }
