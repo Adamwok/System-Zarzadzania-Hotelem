@@ -3,26 +3,24 @@
 
 #include "osoba.h"
 #include <string>
-using namespace std;
-
 
 class Gosc : public Osoba {
 private:
-    string pesel;
-    string email;
-    string nrTelefonu;
-    string adresZamieszkania;
+    std::string pesel;
+    std::string email;
+    std::string nrTelefonu;
+    std::string adresZamieszkania;
 
 public:
-    Gosc(int id, const string &imie, const string &nazwisko, const string &pesel, const string &email, const string &nrTelefonu, const string &adresZamieszkania);
+    Gosc(int id, const std::string &imie, const std::string &nazwisko, const std::string &pesel, const std::string &email, const std::string &nrTelefonu, const std::string &adresZamieszkania);
     ~Gosc() override = default;
 
     void wyswietlInfo() const override;
-    string getPesel() const;
+    std::string getPesel() const;
     bool czyPoprawnyPesel() const;
-    string pobierzDaneDoFaktury() const;
-    void wyslijPotwierdzenieRezerwacji(int nrPokoju, const string &termin) const;
-    bool zaktualizujDaneKontaktowe(const string &nowyEmail, const string& nowyNrTelefonu);
+    std::string pobierzDaneDoFaktury() const;
+    void wyslijPotwierdzenieRezerwacji(int nrPokoju, const std::string &termin) const;
+    bool zaktualizujDaneKontaktowe(const std::string &nowyEmail, const std::string& nowyNrTelefonu);
 };
 
 #endif
