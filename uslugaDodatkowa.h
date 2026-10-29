@@ -6,14 +6,17 @@ using namespace std;
 
 class UslugaDodatkowa {
     private:
+        int idUslugi;
         string nazwa;
         double cena;
     
     public:
-        UslugaDodatkowa(string nazwa, double cena);
+        UslugaDodatkowa(int id, string nazwa, double cena);
 
-        string getNazwa() const;
         double getCena() const;
+        string getNazwa() const;
+        int getIdUslugi() const;
+
 };
 
 #endif
