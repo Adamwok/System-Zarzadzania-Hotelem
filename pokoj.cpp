@@ -1,7 +1,10 @@
 #include "pokoj.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
-Pokoj::Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny)
-    : numer(numer), liczbaMiejsc(liczbaMiejsc), stawkaDobowa(stawkaDobowa), dostepny(dostepny) {}
+Pokoj::Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny, const string &standardPokoju)
+    : numer(numer), liczbaMiejsc(liczbaMiejsc), stawkaDobowa(stawkaDobowa), dostepny(dostepny), standardPokoju(standardPokoju) {}
 
 int Pokoj::getNumer() const {
     return numer;
@@ -17,4 +20,24 @@ bool Pokoj::czyDostepny() const {
 
 void Pokoj::setDostepny(bool status) {
     dostepny = status;
+}
+
+void Pokoj::zablokujDostepnosc() {
+    dostepny = false;
+}
+
+bool Pokoj::czyOdpowiedniDlaGosci(int liczbaOsob) const {
+    return dostepny && (liczbaMiejsc >= liczbaOsob);
+}
+
+void Pokoj::zwolnijPokoj(){
+    dostepny = true;
+}
+
+void Pokoj::wyswietlSzczegoly() const {
+    cout << "[Pokoj] Nr: " << numer
+         << " | Standard: " << standardPokoju
+         << " | Liczba miejsc: " << liczbaMiejsc
+         << " | Stawka: " << stawkaDobowa << " PLN/doba"
+         << " | Status: " << (dostepny ? "Wolny" : "Zajety") << endl;
 }
