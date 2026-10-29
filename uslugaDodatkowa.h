@@ -15,6 +15,7 @@ class UslugaDodatkowa {
 
         double getCena() const;
         string getNazwa() const;
+        int getIdUslugi() const;
 
 };
 
