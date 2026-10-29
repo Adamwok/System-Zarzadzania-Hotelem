@@ -21,7 +21,7 @@ class SystemHotelu {
         ~SystemHotelu() = default;
 
         vector<Pokoj*> wyszukajDostepnePokoje() const;
-        void utworzRezerwacje(int idGoscia, int nrPokoju, string dataOd, string dataDo);
+        void utworzRezerwacje(int idGoscia, int nrPokoju, string dataOd, string dataDo, int idRezerwacji);
         void zameldujGosc(int idRezerwacji);
         void wymeldujGosc(int idRezerwacji, int idFaktury);
         void anulujRezerwacje(int idRezerwacji, bool czyPoTerminie);
