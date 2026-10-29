@@ -1,10 +1,8 @@
 #include "faktura.h"
 #include <iostream>
 #include <string>
-using namespace std;
 
-
-Faktura::Faktura(int idFaktury, const string &numerFaktury, const string &dataWystawienia, double kwotaCalkowita, const string &nip, const string &metodaPlatnosci, const string &statusPlatnosci)
+Faktura::Faktura(int idFaktury, const std::string &numerFaktury, const std::string &dataWystawienia, double kwotaCalkowita, const std::string &nip, const std::string &metodaPlatnosci, const std::string &statusPlatnosci)
     : idFaktury(idFaktury), numerFaktury(numerFaktury), dataWystawienia(dataWystawienia), kwotaCalkowita(kwotaCalkowita), nip(nip), metodaPlatnosci(metodaPlatnosci), statusPlatnosci(statusPlatnosci) {}
 
 int Faktura::getIdFaktury() const{
@@ -15,7 +13,7 @@ double Faktura::getKwotaCalkowita() const {
     return kwotaCalkowita;
 }
 
-bool Faktura::zarejestrujPlatnosc(const string &wybranaMetoda){
+bool Faktura::zarejestrujPlatnosc(const std::string &wybranaMetoda){
     if (statusPlatnosci == "OPLACONA"){
         return false;
     }
@@ -25,11 +23,17 @@ bool Faktura::zarejestrujPlatnosc(const string &wybranaMetoda){
 }
 
 void Faktura::drukujFakture() const {
-    cout << "\========================================\n" << "  FAKTURA VAT: " << numerFaktury << "\n" << "  Data wystawienia: " << dataWystawienia << "\n" << "  Status:           " << statusPlatnosci << "\n" << "  Metoda platnosci: " << metodaPlatnosci << "\n"; 
+    std::cout << "========================================\n"
+              << " [FAKTURA VAT]: " << numerFaktury << "\n"
+              << " | Data wystawienia: " << dataWystawienia << "\n"
+              << " | Status:           " << statusPlatnosci << "\n"
+              << " | Metoda platnosci: " << metodaPlatnosci << "\n"; 
     if (!nip.empty()){
-        cout << "  NIP Nabywcy:      " << nip << "\n";
+        std::cout
+              << " | NIP Nabywcy:      " << nip << "\n";
     }
-    cout << "  Kwota do zaplaty: " << kwotaCalkowita << " PLN\n" << "========================================\n";
+    std::cout << " | Kwota do zaplaty: " << kwotaCalkowita << " PLN\n"
+              << "========================================\n";
 }
 
 bool Faktura::czyFakturaVat() const {
