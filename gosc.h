@@ -3,19 +3,24 @@
 
 #include "osoba.h"
 #include <string>
-using namespace std;
-
 
 class Gosc : public Osoba {
 private:
-    string pesel;
+    std::string pesel;
+    std::string email;
+    std::string nrTelefonu;
+    std::string adresZamieszkania;
 
 public:
-    Gosc(int id, const string &imie, const string &nazwisko, const string &pesel);
+    Gosc(int id, const std::string &imie, const std::string &nazwisko, const std::string &pesel, const std::string &email, const std::string &nrTelefonu, const std::string &adresZamieszkania);
     ~Gosc() override = default;
 
     void wyswietlInfo() const override;
-    string getPesel() const;
+    std::string getPesel() const;
+    bool czyPoprawnyPesel() const;
+    std::string pobierzDaneDoFaktury() const;
+    void wyslijPotwierdzenieRezerwacji(int nrPokoju, const std::string &termin) const;
+    bool zaktualizujDaneKontaktowe(const std::string &nowyEmail, const std::string& nowyNrTelefonu);
 };
 
 #endif
