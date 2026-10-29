@@ -1,7 +1,6 @@
 #ifndef FAKTURA_H
 #define FAKTURA_H
 
-#include <string>
 using namespace std;
 
 class Faktura {
@@ -11,8 +10,10 @@ class Faktura {
     
     public:
         Faktura(int idFaktury, double kwotaCalkowita);
+        ~Faktura() = default;
 
         double getKwotaCalkowita() const;
+        int getIdFaktury() const;
 };
 
 #endif
