@@ -1,9 +1,8 @@
 #include "pokoj.h"
 #include <iostream>
 #include <string>
-using namespace std;
 
-Pokoj::Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny, const string &standardPokoju)
+Pokoj::Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny, const std::string &standardPokoju)
     : numer(numer), liczbaMiejsc(liczbaMiejsc), stawkaDobowa(stawkaDobowa), dostepny(dostepny), standardPokoju(standardPokoju) {}
 
 int Pokoj::getNumer() const {
@@ -35,9 +34,9 @@ void Pokoj::zwolnijPokoj(){
 }
 
 void Pokoj::wyswietlSzczegoly() const {
-    cout << "[Pokoj] Nr: " << numer
+    std::cout << "[Pokoj] Nr: " << numer
          << " | Standard: " << standardPokoju
          << " | Liczba miejsc: " << liczbaMiejsc
          << " | Stawka: " << stawkaDobowa << " PLN/doba"
-         << " | Status: " << (dostepny ? "Wolny" : "Zajety") << endl;
+         << " | Status: " << (dostepny ? "Wolny" : "Zajety") << std::endl;
 }

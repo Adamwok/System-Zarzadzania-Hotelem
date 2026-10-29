@@ -3,18 +3,16 @@
 
 #include <string>
 
-using namespace std;
-
 class Pokoj {
     private:
         int numer;
         int liczbaMiejsc;
         double stawkaDobowa;
         bool dostepny;
-        string standardPokoju;
+        std::string standardPokoju;
     
     public:
-        Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny, const string &standardPokoju);
+        Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny, const std::string &standardPokoju);
         ~Pokoj() = default;
 
 
