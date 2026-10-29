@@ -12,7 +12,7 @@ class Osoba {
         string nazwisko;
     
     public:
-        Osoba(int id, string imie, string nazwisko);
+        Osoba(int id,const string &imie, const string &nazwisko);
         virtual ~Osoba() = default;
 
         int getId() const;
