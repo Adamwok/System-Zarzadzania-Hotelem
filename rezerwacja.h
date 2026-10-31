@@ -11,24 +11,28 @@
 class Rezerwacja {
     private:
         int idRezerwacji;
-        string dataRozpoczecia;
-        string dataZakonczenia;
-        unique_ptr<Pokoj> pokoj;
-        vector<UslugaDodatkowa> uslugiDodatkowe;
-        unique_ptr<Faktura> faktura;
+        int idGoscia;
+        std::string dataRozpoczecia;
+        std::string dataZakonczenia;
+        std::unique_ptr<Pokoj> pokoj;
+        std::vector<UslugaDodatkowa> uslugiDodatkowe;
+        std::unique_ptr<Faktura> faktura;
 
 
     public:
-        Rezerwacja(int idRezerwacji, string dataRozpoczenia, string dataZakonczenia, unique_ptr<Pokoj> pokoj);
+        Rezerwacja(int idRezerwacji, int idGoscia,  std::string dataRozpoczenia, std::string dataZakonczenia, std::unique_ptr<Pokoj> pokoj);
         ~Rezerwacja() = default;
 
-        void dodajUsluge(const UslugaDodatkowa& usluga);
+        void dodajUsluge(const UslugaDodatkowa &usluga);
         double obliczKoszt() const;
         void wystawFakture(int idFaktury);
         double anuluj(bool czyPoTerminie);
 
+        int getIdGoscia() const;
         int getIdRezerwacji() const;
-        const unique_ptr<Pokoj>& Rezerwacja::getPokoj() const;
+        const std::unique_ptr<Pokoj>& Rezerwacja::getPokoj() const;
+        std::unique_ptr<Pokoj> oddajPokoj();
+        const std::unique_ptr<Faktura> &getFaktura() const;
 };
 
 #endif
