@@ -1,6 +1,7 @@
 #include "faktura.h"
 #include <iostream>
 #include <string>
+#include <ctype.h>
 
 Faktura::Faktura(int idFaktury, const std::string &numerFaktury, const std::string &dataWystawienia, double kwotaCalkowita, const std::string &nip, const std::string &metodaPlatnosci, const std::string &statusPlatnosci)
     : idFaktury(idFaktury), numerFaktury(numerFaktury), dataWystawienia(dataWystawienia), kwotaCalkowita(kwotaCalkowita), nip(nip), metodaPlatnosci(metodaPlatnosci), statusPlatnosci(statusPlatnosci) {}
