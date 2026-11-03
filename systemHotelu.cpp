@@ -1,9 +1,14 @@
 #include "systemHotelu.h"
 #include <iostream>
 #include <utility>
+#include <string>
 
-SystemHotelu::SystemHotelu()
-    : licznikRezerwacji(1), licznikFaktur(1) {}
+SystemHotelu::SystemHotelu(const std::string &nazwa)
+    : nazwaHotelu(nazwa), licznikRezerwacji(1), licznikFaktur(1) {}
+
+std::string SystemHotelu::getNazwaHotelu() const {
+    return nazwaHotelu;
+}
 
 void SystemHotelu::dodajGoscia(std::unique_ptr<Gosc> gosc) {
     listaGosci.push_back(std::move(gosc));
@@ -89,7 +94,7 @@ void SystemHotelu::wymeldujGosc(int idRezerwacji) {
     std::cout << "[Systemhotelu] Blad: Nie znaleziono rezerwacji ID: " << idRezerwacji << " do anulowania.\n";
 }
 
-Rezerwacja* SystemHotelu::znajdzRezerwacje(int idRezerwacji) {
+Rezerwacja *SystemHotelu::znajdzRezerwacje(int idRezerwacji) {
     for (const auto& rezerwacja : aktywneRezerwacje) {
         if (rezerwacja->getIdRezerwacji() == idRezerwacji) {
             return rezerwacja.get();

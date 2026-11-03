@@ -21,9 +21,11 @@ class SystemHotelu {
 
         int licznikRezerwacji;
         int licznikFaktur;
+
+        std::string nazwaHotelu;
     
     public:
-        SystemHotelu() = default;
+        SystemHotelu(const std::string &nazwa) : nazwaHotelu(nazwa) {}
         ~SystemHotelu() = default;
 
         void dodajGoscia(std::unique_ptr<Gosc> gosc);
@@ -35,8 +37,9 @@ class SystemHotelu {
         void zameldujGosc(int idRezerwacji);
         void wymeldujGosc(int idRezerwacji);
         void anulujRezerwacje(int idRezerwacji);
+        std::string getNazwaHotelu() const;
 
-        Rezerwacja& znajdzRezerwacje(int idRezerwacji);
+        Rezerwacja *znajdzRezerwacje(int idRezerwacji);
 };
 
 #endif
