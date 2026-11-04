@@ -1,43 +1,40 @@
 #include "gosc.h"
 #include <iostream>
-#include <string>
+#include <cctype>
 
-Gosc::Gosc(int id, const std::string &imie, const std::string &nazwisko, const std::string &pesel, const std::string &email, const std::string & nrTelefonu, const std::string &adresZamieszkania)
+Gosc::Gosc(int id, const std::string &imie, const std::string &nazwisko, const std::string &pesel, const std::string &email, const std::string &nrTelefonu, const std::string &adresZamieszkania)
     : Osoba(id, imie, nazwisko), pesel(pesel), email(email), nrTelefonu(nrTelefonu), adresZamieszkania(adresZamieszkania) {}
 
-void Gosc::wyswietlInfo() const{
+void Gosc::wyswietlInfo() const {
     std::cout << "[Gosc] ID: " << id << "\n"
-              << " | Imie: " << imie << "\n"
-              << " | Nazwisko: " << nazwisko << "\n"
-              << " | PESEL: " << pesel << std::endl;
+              << " | Imie i nazwisko: " << imie << " " << nazwisko << "\n"
+              << " | PESEL: " << pesel << "\n"
+              << " | Telefon: " << nrTelefonu << "\n"
+              << " | Email: " << email << "\n"
+              << " | Adres: " << adresZamieszkania << "\n";
 }
 
 std::string Gosc::getPesel() const {
     return pesel;
 }
 
-bool Gosc::czyPoprawnyPesel() const {
-    if (pesel.length() != 11) return false;
-    for (char c : pesel){
+std::string Gosc::getEmail() const {
+    return email;
+}
+
+void Gosc::wyslijPotwierdzenieRezerwacji(int nrPokoju, const std::string &termin) const {
+    std::cout << "[Powiadomienie EMAIL wyslane na: " << email << "]\n"
+              << " Potwierdzenie: Zarezerwowano pokoj " << nrPokoju << " w terminie " << termin << ".\n";
+}
+
+bool Gosc::czyPoprawnyPesel(const std::string &p) {
+    if (p.length() != 11) return false;
+    for (char c : p) {
         if (!isdigit(c)) return false;
     }
     return true;
 }
 
-std::string Gosc::pobierzDaneDoFaktury() const {
-    return imie + " " + nazwisko + ", PESEL" + pesel + ", Adres zamieszkania: " + adresZamieszkania + ", Numer telefonu: " + nrTelefonu + ", Adres email: " +   email;
+bool Gosc::czyPoprawnyEmail(const std::string &e) {
+    return (e.find('@') != std::string::npos && e.find('.') != std::string::npos && e.length() >= 5);
 }
-
-void Gosc::wyslijPotwierdzenieRezerwacji(int nrPokoju, const std::string &termin) const{
-    std::cout << "[Powiadomienie] Wysłano potwierdzenie rezerwacji na adres " << email << "\n"
-              << "Zarezerwowano pokój " << nrPokoju << " w terminie " << termin << "." << std::endl;
-}
-
-bool Gosc::zaktualizujDaneKontaktowe(const std::string &nowyEmail, const std::string &nowyNrTelefonu){
-        if(nowyEmail.find('@') == std::string::npos || nowyNrTelefonu.empty()){
-            return false;
-        }
-        email = nowyEmail;
-        nrTelefonu = nowyNrTelefonu;
-        return true;
-    }

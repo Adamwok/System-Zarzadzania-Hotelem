@@ -17,10 +17,11 @@ public:
 
     void wyswietlInfo() const override;
     std::string getPesel() const;
-    bool czyPoprawnyPesel() const;
-    std::string pobierzDaneDoFaktury() const;
+    std::string getEmail() const;
     void wyslijPotwierdzenieRezerwacji(int nrPokoju, const std::string &termin) const;
-    bool zaktualizujDaneKontaktowe(const std::string &nowyEmail, const std::string& nowyNrTelefonu);
+
+    static bool czyPoprawnyPesel(const std::string &pesel);
+    static bool czyPoprawnyEmail(const std::string &email);
 };
 
 #endif
