@@ -15,14 +15,13 @@ class Pokoj {
         Pokoj(int numer, int liczbaMiejsc, double stawkaDobowa, bool dostepny, const std::string &standardPokoju);
         ~Pokoj() = default;
 
-
         int getNumer() const;
+        int getLiczbaMiejsc() const;
         double getStawka() const;
+        std::string getStandard() const;
         bool czyDostepny() const;
         void setDostepny(bool status);
 
-        void zablokujDostepnosc();
-        void zwolnijPokoj();
         bool czyOdpowiedniDlaGosci(int liczbaOsob) const;
         void wyswietlSzczegoly() const;
 };
