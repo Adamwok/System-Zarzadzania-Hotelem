@@ -1,21 +1,28 @@
 #include "faktura.h"
 #include <iostream>
-#include <string>
-#include <ctype.h>
+#include <cctype>
 
 Faktura::Faktura(int idFaktury, const std::string &numerFaktury, const std::string &dataWystawienia, double kwotaCalkowita, const std::string &nip, const std::string &metodaPlatnosci, const std::string &statusPlatnosci)
-    : idFaktury(idFaktury), numerFaktury(numerFaktury), dataWystawienia(dataWystawienia), kwotaCalkowita(kwotaCalkowita), nip(nip), metodaPlatnosci(metodaPlatnosci), statusPlatnosci(statusPlatnosci) {}
+    : idFaktury(idFaktury), kwotaCalkowita(kwotaCalkowita), dataWystawienia(dataWystawienia), metodaPlatnosci(metodaPlatnosci), statusPlatnosci(statusPlatnosci), numerFaktury(numerFaktury), nip(nip) {}
 
-int Faktura::getIdFaktury() const{
+int Faktura::getIdFaktury() const {
     return idFaktury;
+}
+
+std::string Faktura::getNumerFaktury() const {
+    return numerFaktury;
 }
 
 double Faktura::getKwotaCalkowita() const {
     return kwotaCalkowita;
 }
 
-bool Faktura::zarejestrujPlatnosc(const std::string &wybranaMetoda){
-    if (statusPlatnosci == "OPLACONA"){
+std::string Faktura::getStatusPlatnosci() const {
+    return statusPlatnosci;
+}
+
+bool Faktura::zarejestrujPlatnosc(const std::string &wybranaMetoda) {
+    if (statusPlatnosci == "OPLACONA") {
         return false;
     }
     metodaPlatnosci = wybranaMetoda;
@@ -25,30 +32,21 @@ bool Faktura::zarejestrujPlatnosc(const std::string &wybranaMetoda){
 
 void Faktura::drukujFakture() const {
     std::cout << "========================================\n"
-              << " [FAKTURA VAT]: " << numerFaktury << "\n"
+              << " [FAKTURA]: " << numerFaktury << "\n"
               << " | Data wystawienia: " << dataWystawienia << "\n"
               << " | Status:           " << statusPlatnosci << "\n"
               << " | Metoda platnosci: " << metodaPlatnosci << "\n"; 
-    if (!nip.empty()){
-        std::cout
-              << " | NIP Nabywcy:      " << nip << "\n";
+    if (!nip.empty()) {
+        std::cout << " | NIP Nabywcy:      " << nip << " (FAKTURA VAT)\n";
     }
-    std::cout << " | Kwota do zaplaty: " << kwotaCalkowita << " PLN\n"
+    std::cout << " | Kwota:            " << kwotaCalkowita << " PLN\n"
               << "========================================\n";
 }
 
-bool Faktura::czyFakturaVat() const {
-    if (nip.length() != 10){
-        return false;
-    }
-    for (char c : nip) {
-        if(!isdigit(c)){
-            return false;
-        }
+bool Faktura::czyFakturaVat(const std::string &n) {
+    if (n.length() != 10) return false;
+    for (char c : n) {
+        if (!isdigit(c)) return false;
     }
     return true;
-}
-
-bool Faktura::czyWymagaZaplaty() const {
-    return statusPlatnosci != "OPLACONA";
 }
