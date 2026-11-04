@@ -2,23 +2,18 @@
 #define OSOBA_H
 
 #include <string>
-using namespace std;
-
 
 class Osoba {
     protected:
         int id;
-        string imie;
-        string nazwisko;
+        std::string imie;
+        std::string nazwisko;
     
     public:
-        Osoba(int id,const string &imie, const string &nazwisko);
+        Osoba(int id, const std::string &imie, const std::string &nazwisko);
         virtual ~Osoba() = default;
 
         int getId() const;
-        string getImie() const;
-        string getNazwisko() const;
-
         virtual void wyswietlInfo() const = 0;
 };
 
