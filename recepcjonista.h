@@ -2,18 +2,16 @@
 #define RECEPCJONISTA_H
 
 #include "osoba.h"
-using namespace std;
+#include <string>
 
 class Recepcjonista : public Osoba {
     private:
         int idPracownika;
-        string dataZatrudnienia;
+        std::string dataZatrudnienia;
         double pensja;
     
     public:
-        Recepcjonista(int id, string imie, string nazwisko, int idPracownika, string dataZatrudnienia, double pensja);
-
-        int getIdPracownika() const;
+        Recepcjonista(int id, const std::string &imie, const std::string &nazwisko, int idPracownika, const std::string &dataZatrudnienia, double pensja);
         void wyswietlInfo() const override;
 };
 

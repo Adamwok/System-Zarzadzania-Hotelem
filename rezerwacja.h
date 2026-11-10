@@ -12,27 +12,37 @@ class Rezerwacja {
     private:
         int idRezerwacji;
         int idGoscia;
+        Pokoj* pokoj;
+        int liczbaDob;
+        int liczbaOsob;
+        double oplataManipulacyjna;
+        std::string status;
         std::string dataRozpoczecia;
         std::string dataZakonczenia;
-        std::unique_ptr<Pokoj> pokoj;
         std::vector<UslugaDodatkowa> uslugiDodatkowe;
         std::unique_ptr<Faktura> faktura;
 
-
     public:
-        Rezerwacja(int idRezerwacji, int idGoscia,  std::string dataRozpoczenia, std::string dataZakonczenia, std::unique_ptr<Pokoj> pokoj);
+        Rezerwacja(int idRezerwacji, int idGoscia, Pokoj* pokoj, const std::string &dataRozpoczecia, const std::string &dataZakonczenia, int liczbaDob, int liczbaOsob);
         ~Rezerwacja() = default;
 
         void dodajUsluge(const UslugaDodatkowa &usluga);
-        double obliczKoszt() const;
-        void wystawFakture(int idFaktury);
-        double anuluj(bool czyPoTerminie);
+        double obliczKosztUslug() const;
+        double obliczKosztCalkowity() const;
+        void zmienStatus(const std::string &nowyStatus);
+        void wystawFakture(int idFaktury, const std::string &dataWystawiania, const std::string &nip = "");
+        double naliczOplateManipulacyjna(double kwotaKary);
 
-        int getIdGoscia() const;
         int getIdRezerwacji() const;
-        const std::unique_ptr<Pokoj>& Rezerwacja::getPokoj() const;
-        std::unique_ptr<Pokoj> oddajPokoj();
-        const std::unique_ptr<Faktura> &getFaktura() const;
+        int getIdGoscia() const;
+        Pokoj* getPokoj() const;
+        Faktura* getFaktura() const;
+        std::string getDataRozpoczecia() const;
+        std::string getDataZakonczenia() const;
+        int getLiczbaDob() const;
+        int getLiczbaOsob() const;
+        std::string getStatus() const;
+        double getOplataManipulacyjna() const;
 };
 
 #endif
